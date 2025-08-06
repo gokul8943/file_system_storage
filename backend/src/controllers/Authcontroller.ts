@@ -33,8 +33,13 @@ export const register = async (req: Request, res: Response) => {
             token,
             user: { id: user._id, name: user.name, email: user.email },
         });
-    } catch (error) {
-
+    } catch (error: any) {
+        console.error("Error in register:", error);
+        res.status(500).json({
+            success: false,
+            message: error.message || "Internal server error",
+            details: error.response?.data || error.message
+        });
     }
 }
 
@@ -45,32 +50,36 @@ export const login = async (req: Request, res: Response) => {
             res.status(400).json({ success: false, message: "Missing required fields" });
             return;
         }
-            const user = await userModel.findOne({ email })
+        const user = await userModel.findOne({ email })
 
-            if (!user) {
-                return res.status(400).json({ message: "User not found" })
-            }
+        if (!user) {
+            return res.status(400).json({ message: "User not found" })
+        }
 
-            const isMatch = await bcrypt.compare(password, user.password as string)
-            if (isMatch) {
-                const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET as string, { expiresIn: '30m' });
-                const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET as string, { expiresIn: '30d' });
-                res.status(200).json({
-                    success: true,
-                    accessToken,
-                    refreshToken,
-                    user: {
-                        id: user._id,
-                        username: user.name,
-                        email: user.email,
-                        phone: user.phone,
-                    }
-                })
-            } else {
-                return res.status(401).json({ message: "Invalid credentials" })
-            }
-        
-    } catch (error) {
-
+        const isMatch = await bcrypt.compare(password, user.password as string)
+        if (isMatch) {
+            const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET as string, { expiresIn: '30m' });
+            const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET as string, { expiresIn: '30d' });
+            res.status(200).json({
+                success: true,
+                accessToken,
+                refreshToken,
+                user: {
+                    id: user._id,
+                    username: user.name,
+                    email: user.email,
+                    phone: user.phone,
+                }
+            })
+        } else {
+            return res.status(401).json({ message: "Invalid credentials" })
+        }
+    } catch (error:any) {
+   console.error("Error in login:", error);
+        res.status(500).json({
+            success: false,
+            message: error.message || "Internal server error",
+            details: error.response?.data || error.message
+        });
     }
 }
