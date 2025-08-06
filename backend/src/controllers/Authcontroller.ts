@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 
-export const regsiter = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response) => {
     try {
         const { name, email, phone, password } = req.body;
 
