@@ -13,13 +13,13 @@ import FormField from "./Formfield";
 import { login, register } from "@/services/auth";
 import { useAuthStore } from "@/store/authStore"
 import Image from "next/image";
-import LogoSvg from "@/public/logo.svg";
+import { Cloud } from "lucide-react";
 
-type FormType = "sign-in" | "sign-up";
+type FormType = "signIn" | "signUp";
 
 const authFormSchema = (type: FormType) =>
   z.object({
-    name: type === "sign-up" ? z.string().min(1, "Name is required") : z.string().optional(),
+    name: type === "signUp" ? z.string().min(1, "Name is required") : z.string().optional(),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
   });
@@ -37,7 +37,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     },
   });
 
-  const isSignIn = type === "sign-in";
+  const isSignIn = type === "signIn";
 
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
@@ -52,7 +52,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
       } else {
         await register(data.name || "", data.email, data.password);
         toast.success("Account created successfully. Please sign in.");
-        router.push("/sign-in");
+        router.push("/signIn");
       }
     } catch (error: any) {
       console.error(error);
@@ -61,14 +61,12 @@ const AuthForm = ({ type }: { type: FormType }) => {
   };
 
   return (
-    <div className="card-border lg:min-w-[566px]">
+    <div className="card-border lg:min-w-[566px] border border-primary-100 mt-1.5 rounded-3xl shadow-2xl">
       <div className="flex flex-col gap-6 card py-14 px-10">
         <div className="flex justify-center gap-2">
-          <Image src={LogoSvg} alt="logo" height={32} width={38} />
-          <h2 className="text-primary-100">IntelliPrep</h2>
+          <Cloud className="h-8 w-8 text-indigo-600"  />
+          <h2 className="text-blue-800 text-2xl font-bold ">Secure Storage</h2>
         </div>
-        <h3 className="text-primary-100">Practice Job Interview with AI</h3>
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form">
             {!isSignIn && (
@@ -97,7 +95,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               type="password"
             />
 
-            <Button className="btn w-full" type="submit">
+            <Button className="btn w-full bg-blue-800" type="submit">
               {isSignIn ? "Sign In" : "Create an Account"}
             </Button>
           </form>
@@ -106,7 +104,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         <p className="text-center">
           {isSignIn ? "No account yet?" : "Have an account already?"}
           <a
-            href={isSignIn ? "/sign-up" : "/sign-in"}
+            href={isSignIn ? "/signUp" : "/signIn"}
             className="font-bold text-user-primary ml-1"
           >
             {isSignIn ? "Sign Up" : "Sign In"}

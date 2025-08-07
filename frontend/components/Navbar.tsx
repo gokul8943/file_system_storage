@@ -13,11 +13,11 @@ const Navbar = () => {
   const router = useRouter();
 
   const handleNavigate = () => {
-    router.push('/sign-in');
+    router.push('/signIn');
   };
 
   return (
-    <div className="bg-white/5 z-10 fixed top-0 left-0 w-full p-3 border border-b-2">
+    <div className="bg-white z-10 fixed top-0 left-0 w-full p-3 border border-b-2">
       <nav className="flex justify-between items-center">
         <div>
           <Link href="/" className="flex items-center gap-2">
