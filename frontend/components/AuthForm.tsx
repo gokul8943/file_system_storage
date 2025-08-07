@@ -12,7 +12,6 @@ import FormField from "./Formfield";
 
 import { login, register } from "@/services/auth";
 import { useAuthStore } from "@/store/authStore"
-import Image from "next/image";
 import { Cloud } from "lucide-react";
 
 type FormType = "signIn" | "signUp";
@@ -48,7 +47,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         useAuthStore.getState().setAccessToken(accessToken);
         useAuthStore.getState().setUser(user);
         toast.success("Logged in successfully.");
-        router.push("/");
+        router.push("/dashboard");
       } else {
         await register(data.name || "", data.email, data.password);
         toast.success("Account created successfully. Please sign in.");
