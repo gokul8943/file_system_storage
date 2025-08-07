@@ -49,10 +49,10 @@ const Sidebar = () => {
     };
 
     return (
-        <div className={`${isCollapsed ? 'w-20' : 'w-72'} h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out`}>
-            <div className="p-6 mt-8">
+        <div className={`${isCollapsed ? 'w-16' : 'w-55'} h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out flex-shrink-0`}>
+            <div className="p-4 mt-8">
             </div>
-            <div className="flex-1 px-4 space-y-1 overflow-y-auto">
+            <div className="flex-1 px-3 space-y-1 overflow-y-auto">
                 <div className="space-y-1">
                     {menuItems.map((item) => (
                         <MenuItem
@@ -63,11 +63,7 @@ const Sidebar = () => {
                         />
                     ))}
                 </div>
-                <div className="flex items-center justify-between">
-                    {!isCollapsed && (
-                        <div className="flex items-center space-x-3">
-                        </div>
-                    )}
+                <div className="flex items-center justify-between mt-4">
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
                         className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -77,7 +73,7 @@ const Sidebar = () => {
                 </div>
             </div>
             {/* Bottom Menu */}
-            <div className="p-4 border-t border-gray-200 space-y-1">
+            <div className="p-3 border-t border-gray-200 space-y-1">
                 <MenuItem
                     item={{ id: '', icon: User, label: <span>{user?.username || ''}</span>, count: null }}
                     isActive={activeItem === 'settings'}
