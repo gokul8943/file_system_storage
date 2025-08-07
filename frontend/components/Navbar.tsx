@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { User } from 'lucide-react';
+import { Cloud, User } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from './ui/button';
 import Image from 'next/image';
@@ -21,8 +21,8 @@ const Navbar = () => {
       <nav className="flex justify-between items-center">
         <div>
           <Link href="/" className="flex items-center gap-2">
-            <File />
-            <h2 className="text-slate-700 text-2xl font-bold ">File System</h2>
+            <Cloud className="h-8 w-8 text-indigo-600"  />
+            <h2 className="text-blue-800 text-2xl font-bold ">Secure Storage</h2>
           </Link>
         </div>
 
@@ -34,7 +34,7 @@ const Navbar = () => {
           <div>
             <Button
               onClick={handleNavigate}
-              className="bg-gradient-to-r from-slate-400 to-black font-bold"
+              className="bg-gradient-to-r from-blue-400 to-black font-bold"
             >
               Login
             </Button>
