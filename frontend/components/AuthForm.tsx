@@ -44,8 +44,8 @@ const AuthForm = ({ type }: { type: FormType }) => {
       if (isSignIn) {
         const response = await login(data.email, data.password);
         const { accessToken, user } = response;
-        useAuthStore.getState().setAccessToken(accessToken);
-        useAuthStore.getState().setUser(user);
+        useAuthStore.getState().updateAccessToken(accessToken);
+        useAuthStore.getState().updateUser(user);
         toast.success("Logged in successfully.");
         router.push("/dashboard");
       } else {
@@ -63,7 +63,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     <div className="card-border lg:min-w-[566px] border border-primary-100 mt-1.5 rounded-3xl shadow-2xl">
       <div className="flex flex-col gap-6 card py-14 px-10">
         <div className="flex justify-center gap-2">
-          <Cloud className="h-8 w-8 text-indigo-600"  />
+          <Cloud className="h-8 w-8 text-indigo-600" />
           <h2 className="text-blue-800 text-2xl font-bold ">Secure Storage</h2>
         </div>
         <Form {...form}>

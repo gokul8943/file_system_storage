@@ -1,7 +1,7 @@
 'use client';
 // pages/dashboard.tsx
 import { useEffect, useState } from 'react';
-import { useAuthStore } from '@/store/authStore';
+import  {useAuthStore } from '@/store/authStore';
 import { getFiles, uploadFile, deleteFile, downloadFile } from '@/services/file';
 
 interface FileItem {
@@ -14,7 +14,7 @@ interface FileItem {
 }
 
 export default function Dashboard() {
-  const user = useAuthStore((state) => state.user);
+  const user = useAuthStore((state:any) => state.user);
   const [files, setFiles] = useState<FileItem[]>([]);
   const [uploading, setUploading] = useState(false);
 

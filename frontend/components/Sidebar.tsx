@@ -2,23 +2,23 @@
 
 import React, { useState } from 'react';
 import {
-    Home, Trash2, Settings, Star, Clock, ChevronLeft, ChevronRight
+    Home, Star, Clock, ChevronLeft, ChevronRight, User
 } from 'lucide-react';
+import { useAuthStore } from '@/store/authStore';
+import { useRouter } from 'next/navigation';
 
 const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [activeItem, setActiveItem] = useState('home');
+    const router = useRouter();
 
     const menuItems = [
         { id: 'home', icon: Home, label: 'Home', count: null },
         { id: 'recent', icon: Clock, label: 'Recent', count: null },
     ];
+    const { authState } = useAuthStore();
+    const user = authState.user
 
-
-    const bottomItems = [
-        { id: 'trash', icon: Trash2, label: 'Trash', count: 7 },
-        { id: 'settings', icon: Settings, label: 'Settings', count: null },
-    ];
 
 
     const MenuItem = ({ item, isActive, onClick }: any) => {
@@ -78,14 +78,19 @@ const Sidebar = () => {
             </div>
             {/* Bottom Menu */}
             <div className="p-4 border-t border-gray-200 space-y-1">
-                {bottomItems.map((item) => (
-                    <MenuItem
-                        key={item.id}
-                        item={item}
-                        isActive={activeItem === item.id}
-                        onClick={() => setActiveItem(item.id)}
-                    />
-                ))}
+                <MenuItem
+                    item={{ id: '', icon: User, label: <span>{user?.username || ''}</span>, count: null }}
+                    isActive={activeItem === 'settings'}
+                    onClick={() => setActiveItem('settings')}
+                />
+                <MenuItem
+                    item={{ id: 'logout', icon: Star, label: 'Logout', count: null }}
+                    isActive={activeItem === 'logout'}
+                    onClick={() => {
+                        useAuthStore.getState().logout();
+                        router.push('/signIn');
+                    }}
+                />
             </div>
         </div>
     );

@@ -7,9 +7,8 @@ import jwt from 'jsonwebtoken'
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { name, email, phone, password } = req.body;
-
-        if (!name || !email || !phone || !password) {
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) {
             res.status(400).json({ success: false, message: "Missing required fields" });
             return;
         }
@@ -21,7 +20,7 @@ export const register = async (req: Request, res: Response) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const newUser = new userModel({ name, email, phone, password: hashedPassword });
+        const newUser = new userModel({ name, email, password: hashedPassword });
         const user = await newUser.save();
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
