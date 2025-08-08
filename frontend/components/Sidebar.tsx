@@ -1,25 +1,39 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Home, Star, Clock, ChevronLeft, ChevronRight, User
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [activeItem, setActiveItem] = useState('home');
     const router = useRouter();
+    const pathname = usePathname();
 
     const menuItems = [
-        { id: 'home', icon: Home, label: 'Home', count: null },
-        { id: 'recent', icon: Clock, label: 'Recent', count: null },
+        { id: 'dashboard', icon: Home, label: 'Dashboard', path: '/dashboard' },
+        { id: 'recent', icon: Clock, label: 'Recent', path: '/recent' },
     ];
     const { authState } = useAuthStore();
-    const user = authState.user
+    const user = authState.user;
 
+    // Set active item based on current pathname
+    useEffect(() => {
+        const currentItem = menuItems.find(item => item.path === pathname);
+        if (currentItem) {
+            setActiveItem(currentItem.id);
+        } else if (pathname === '/') {
+            setActiveItem('dashboard');
+        }
+    }, [pathname]);
 
+    const handleMenuItemClick = (item: any) => {
+        setActiveItem(item.id);
+        router.push(item.path);
+    };
 
     const MenuItem = ({ item, isActive, onClick }: any) => {
         const Icon = item.icon;
@@ -49,21 +63,25 @@ const Sidebar = () => {
     };
 
     return (
-        <div className={`${isCollapsed ? 'w-16' : 'w-55'} h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out flex-shrink-0`}>
-            <div className="p-4 mt-8">
+        <div className={`${isCollapsed ? 'w-20' : 'w-72'} h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ease-in-out`}>
+            <div className="p-6 mt-8">
             </div>
-            <div className="flex-1 px-3 space-y-1 overflow-y-auto">
+            <div className="flex-1 px-4 space-y-1 overflow-y-auto">
                 <div className="space-y-1">
                     {menuItems.map((item) => (
                         <MenuItem
                             key={item.id}
                             item={item}
                             isActive={activeItem === item.id}
-                            onClick={() => setActiveItem(item.id)}
+                            onClick={() => handleMenuItemClick(item)}
                         />
                     ))}
                 </div>
-                <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center justify-between">
+                    {!isCollapsed && (
+                        <div className="flex items-center space-x-3">
+                        </div>
+                    )}
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
                         className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -73,11 +91,11 @@ const Sidebar = () => {
                 </div>
             </div>
             {/* Bottom Menu */}
-            <div className="p-3 border-t border-gray-200 space-y-1">
+            <div className="p-4 border-t border-gray-200 space-y-1">
                 <MenuItem
-                    item={{ id: '', icon: User, label: <span>{user?.username || ''}</span>, count: null }}
-                    isActive={activeItem === 'settings'}
-                    onClick={() => setActiveItem('settings')}
+                    item={{ id: 'profile', icon: User, label: <span>{user?.username || 'Profile'}</span>, count: null }}
+                    isActive={activeItem === 'profile'}
+                    onClick={() => setActiveItem('profile')}
                 />
                 <MenuItem
                     item={{ id: 'logout', icon: Star, label: 'Logout', count: null }}
