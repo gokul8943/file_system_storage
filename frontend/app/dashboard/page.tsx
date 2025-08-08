@@ -58,7 +58,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto pt-8">
+    <div className="max-w-6xl mx-auto px-6 py-18">
       <h1 className="text-3xl font-bold mb-6">Welcome, {user?.username || 'User'}</h1>
 
       <div className="mb-6">
