@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { IFile } from './FileTypes';
+import { IFile } from './fileTypes';
 
 const FileSchema: Schema = new Schema(
     {
